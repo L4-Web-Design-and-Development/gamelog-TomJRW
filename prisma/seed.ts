@@ -138,10 +138,27 @@ async function seed() {
   }
 
   console.log("🎮 Categories created successfully");
+  console.log("🔗 Linking each game to a category");
+
+  // Fetch games from the database
+  const dbGames = await prisma.game.findMany();
+
+  // Fetch categories from the database
+  const dbCategories = await prisma.category.findMany();
+
+  // Link each game to a category
+  for (const game of dbGames) {
+    const category =
+      dbCategories[Math.floor(Math.random() * dbCategories.length)];
+    await prisma.game.update({
+      where: { id: game.id },
+      data: { categoryId: category.id },
+    });
+  }
+
+  console.log("🔗 Games and categories linked successfully");
 
   console.log("Seed data created successfully");
-  console.log("🎮 Categories created successfully");
-
 }
 
 seed()
