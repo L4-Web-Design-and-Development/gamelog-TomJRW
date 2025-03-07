@@ -32,3 +32,5 @@ model Category {
   updatedAt   DateTime @updatedAt
   games       Game[]
 }
+
+
