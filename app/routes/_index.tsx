@@ -29,7 +29,7 @@ export default function Index() {
   return (
     <div className="min-h-screen bg-[#0f172a] text-white flex flex-col justify-between">
       {/* Header */}
-      <header className="flex items-center justify-between px-8 py-6">
+      <header className="flex items-center justify-between px-32 py-12">
         <div className="text-2xl font-bold tracking-wide">
           <span className="text-cyan-400">GAME</span> LOG
         </div>
