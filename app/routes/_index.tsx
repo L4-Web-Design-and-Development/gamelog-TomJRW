@@ -139,10 +139,10 @@ export default function Index() {
       </main>
 
       {/* Footer */}
-      <footer className="flex justify-between items-center px-8 py-6 text-zinc-400 text-sm border-t border-slate-700">
+      <footer className="flex justify-between items-center px-32 py-12 text-zinc-400 text-sm border-t border-slate-700">
         <div className="flex items-center gap-2">
           <span className="font-bold text-cyan-400">GAME LOG</span>
-          <div className="flex gap-2 ml-4">
+          <div className="flex gap-4 ml-4">
             <a
               href="https://facebook.com"
               aria-label="Facebook"
@@ -169,7 +169,7 @@ export default function Index() {
             </a>
           </div>
         </div>
-        <div className="flex gap-6">
+        <div className="flex gap-48">
           <div>
             <h4 className="font-semibold mb-1 text-white">Site</h4>
             <ul className="space-y-2">
