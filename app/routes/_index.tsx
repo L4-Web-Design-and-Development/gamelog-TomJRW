@@ -2,6 +2,9 @@ import { PrismaClient } from "@prisma/client";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import type { MetaFunction } from "@remix-run/node";
+import InstagramIcon from "~/assets/svg/instagram.svg";
+import FacebookIcon from "~/assets/svg/facebook.svg";
+import TwitterIcon from "~/assets/svg/twitter.svg";
 
 export const meta: MetaFunction = () => {
   return [
@@ -24,7 +27,7 @@ export default function Index() {
   console.log({ games });
 
   return (
-    <div className="min-h-screen bg-zinc-900 text-white flex flex-col justify-between">
+    <div className="min-h-screen bg-[#0f172a] text-white flex flex-col justify-between">
       {/* Header */}
       <header className="flex items-center justify-between px-8 py-6">
         <div className="text-2xl font-bold tracking-wide">
@@ -46,7 +49,7 @@ export default function Index() {
       {/* Main Form */}
       <main className="flex flex-col items-center justify-center px-4 py-10">
         <h1 className="text-2xl font-semibold mb-6">Track a New Game</h1>
-        <form className="bg-zinc-800 p-6 rounded-xl w-full max-w-md space-y-4 shadow-lg">
+        <form className="bg-slate-800 p-6 rounded-xl w-full max-w-md space-y-4 shadow-lg">
           <div>
             <label htmlFor="title" className="block mb-1 text-sm text-zinc-300">
               Title
@@ -136,7 +139,7 @@ export default function Index() {
       </main>
 
       {/* Footer */}
-      <footer className="flex justify-between items-center px-8 py-6 text-zinc-400 text-sm border-t border-zinc-700">
+      <footer className="flex justify-between items-center px-8 py-6 text-zinc-400 text-sm border-t border-slate-700">
         <div className="flex items-center gap-2">
           <span className="font-bold text-cyan-400">GAME LOG</span>
           <div className="flex gap-2 ml-4">
@@ -146,7 +149,7 @@ export default function Index() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              📘
+              <img src={FacebookIcon} alt="Instagram" className="w-5 h-5" />
             </a>
             <a
               href="https://instagram.com"
@@ -154,7 +157,7 @@ export default function Index() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              📸
+              <img src={InstagramIcon} alt="Instagram" className="w-5 h-5" />
             </a>
             <a
               href="https://x.com"
@@ -162,7 +165,7 @@ export default function Index() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              🐦
+              <img src={TwitterIcon} alt="Instagram" className="w-5 h-5" />
             </a>
           </div>
         </div>
