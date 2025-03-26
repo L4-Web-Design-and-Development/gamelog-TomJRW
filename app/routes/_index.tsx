@@ -172,7 +172,7 @@ export default function Index() {
         <div className="flex gap-6">
           <div>
             <h4 className="font-semibold mb-1 text-white">Site</h4>
-            <ul className="space-y-1">
+            <ul className="space-y-2">
               <li>
                 <a href="#" className="hover:text-white">
                   Games
@@ -192,7 +192,7 @@ export default function Index() {
           </div>
           <div>
             <h4 className="font-semibold mb-1 text-white">Support</h4>
-            <ul className="space-y-1">
+            <ul className="space-y-2">
               <li>
                 <a href="#" className="hover:text-white">
                   Legal
@@ -212,7 +212,7 @@ export default function Index() {
           </div>
           <div>
             <h4 className="font-semibold mb-1 text-white">Follow Us</h4>
-            <ul className="space-y-1">
+            <ul className="space-y-2">
               <li>
                 <a href="#" className="hover:text-white">
                   Facebook
