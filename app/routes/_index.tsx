@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, Link } from "@remix-run/react";
 import type { MetaFunction } from "@remix-run/node";
 import InstagramIcon from "~/assets/svg/instagram.svg";
 import FacebookIcon from "~/assets/svg/facebook.svg";
@@ -34,15 +34,15 @@ export default function Index() {
           <span className="text-cyan-400">GAME</span> LOG
         </div>
         <nav className="space-x-6 text-zinc-300 text-sm">
-          <button className="hover:text-white bg-transparent border-none cursor-pointer">
+          <Link to="/games" className="hover:text-white">
             Games
-          </button>
-          <button className="hover:text-white bg-transparent border-none cursor-pointer">
+          </Link>
+          <Link to="/about" className="hover:text-white">
             About
-          </button>
-          <button className="hover:text-white bg-transparent border-none cursor-pointer">
+          </Link>
+          <Link to="/blog" className="hover:text-white">
             Blog
-          </button>
+          </Link>
         </nav>
       </header>
 
@@ -106,6 +106,9 @@ export default function Index() {
               <option>RPG</option>
               <option>Action</option>
               <option>Strategy</option>
+              <option>FPS</option>
+              <option>MMO</option>
+              <option>CO-OP</option>
             </select>
           </div>
           <div>
@@ -120,6 +123,34 @@ export default function Index() {
               placeholder="In a few words, what was your experience with the game?"
               className="w-full p-2 h-24 rounded-md bg-zinc-700 text-white placeholder-zinc-500"
             />
+            <div className="flex space-x-4">
+              <div className="flex-1">
+                <label
+                  htmlFor="startDate"
+                  className="block mb-1 text-sm text-zinc-300"
+                >
+                  Start Date
+                </label>
+                <input
+                  id="startDate"
+                  type="date"
+                  className="w-full p-2 rounded-md bg-zinc-700 text-white placeholder-zinc-500"
+                />
+              </div>
+              <div className="flex-1">
+                <label
+                  htmlFor="endDate"
+                  className="block mb-1 text-sm text-zinc-300"
+                >
+                  End Date
+                </label>
+                <input
+                  id="endDate"
+                  type="date"
+                  className="w-full p-2 rounded-md bg-zinc-700 text-white placeholder-zinc-500"
+                />
+              </div>
+            </div>
           </div>
           <div className="flex justify-end space-x-2">
             <button
@@ -174,9 +205,9 @@ export default function Index() {
             <h4 className="font-semibold mb-1 text-white">Site</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="hover:text-white">
+                <Link to="/games" className="hover:text-white">
                   Games
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="#" className="hover:text-white">
