@@ -56,6 +56,7 @@ export default function Index() {
             </label>
             <input
               id="title"
+              name="title"
               type="text"
               placeholder="Enter title"
               className="w-full p-2 rounded-md bg-zinc-700 text-white placeholder-zinc-500"
@@ -71,6 +72,7 @@ export default function Index() {
               </label>
               <input
                 id="price"
+                name="price"
                 type="text"
                 placeholder="e.g. 59.99, 84.99..."
                 className="w-full p-2 rounded-md bg-zinc-700 text-white placeholder-zinc-500"
@@ -85,6 +87,7 @@ export default function Index() {
               </label>
               <input
                 id="rating"
+                name="rating"
                 type="text"
                 placeholder="1-5"
                 className="w-full p-2 rounded-md bg-zinc-700 text-white placeholder-zinc-500"
@@ -100,6 +103,7 @@ export default function Index() {
             </label>
             <select
               id="category"
+              name="category"
               className="w-full p-2 rounded-md bg-zinc-700 text-white"
             >
               <option>Please select...</option>
@@ -120,6 +124,7 @@ export default function Index() {
             </label>
             <textarea
               id="description"
+              name="description"  
               placeholder="In a few words, what was your experience with the game?"
               className="w-full p-2 h-24 rounded-md bg-zinc-700 text-white placeholder-zinc-500"
             />
@@ -133,6 +138,7 @@ export default function Index() {
                 </label>
                 <input
                   id="startDate"
+                  name="startDate"
                   type="date"
                   className="w-full p-2 rounded-md bg-zinc-700 text-white placeholder-zinc-500"
                 />
@@ -146,6 +152,7 @@ export default function Index() {
                 </label>
                 <input
                   id="endDate"
+                  name="endDate"
                   type="date"
                   className="w-full p-2 rounded-md bg-zinc-700 text-white placeholder-zinc-500"
                 />
