@@ -1,5 +1,5 @@
 import { json } from "@remix-run/node";
-import { useLoaderData, Link } from "@remix-run/react";
+import { useLoaderData, Link, Form, redirect } from "@remix-run/react";
 import { prisma } from "~/utils/db.server";
 import InstagramIcon from "~/assets/svg/instagram.svg";
 import FacebookIcon from "~/assets/svg/facebook.svg";
@@ -19,6 +19,16 @@ export const loader = async () => {
     orderBy: { createdAt: "desc" },
   });
   return json({ games });
+};
+
+// Action handles deletion
+export const action = async ({ request }) => {
+  const formData = await request.formData();
+  const deleteId = formData.get("deleteId");
+  if (deleteId) {
+    await prisma.game.delete({ where: { id: String(deleteId) } });
+  }
+  return redirect("/games");
 };
 
 export default function GamesPage() {
@@ -99,6 +109,17 @@ export default function GamesPage() {
                   {new Date(game.releaseDate).toLocaleDateString()}
                 </p>
               </div>
+              {/* Delete Form */}
+              <Form method="post" className="self-end">
+                <button
+                  type="submit"
+                  name="deleteId"
+                  value={game.id}
+                  className="text-red-400 hover:text-red-600 text-sm"
+                >
+                  Delete
+                </button>
+              </Form>
             </div>
           ))}
         </div>
