@@ -60,12 +60,12 @@ export default function AddGame() {
 
   return (
     <div className="min-h-screen bg-[#0f172a] text-white flex flex-col justify-between">
-      {/* HEADER */}
-      <header className="flex items-center justify-between px-32 py-12">
-        <div className="text-2xl font-bold tracking-wide">
+      {/* Header */}
+      <header className="flex flex-col md:flex-row items-center justify-between px-4 md:px-32 py-6 md:py-12">
+        <div className="text-2xl font-bold tracking-wide mb-4 md:mb-0">
           <span className="text-cyan-400">GAME</span> LOG
         </div>
-        <nav className="space-x-6 text-zinc-300 text-sm">
+        <nav className="flex flex-col sm:flex-row items-center space-y-2 sm:space-y-0 sm:space-x-6 text-zinc-300 text-sm">
           <Link to="/games" className="hover:text-white">
             Games
           </Link>
