@@ -1,8 +1,5 @@
 node_modules
 
-# Ignore database file
-/prisma/data.db
-
 /.cache
 /build
 /public/build
