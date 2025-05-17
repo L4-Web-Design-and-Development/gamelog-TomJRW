@@ -1,9 +1,26 @@
-import { Link } from "@remix-run/react";
+import { json } from "@remix-run/node";
+import { Form, Link, useActionData } from "@remix-run/react";
+import type { ActionFunction } from "@remix-run/node";
 import InstagramIcon from "~/assets/svg/instagram.svg";
 import FacebookIcon from "~/assets/svg/facebook.svg";
 import TwitterIcon from "~/assets/svg/twitter.svg";
 
-export default function AboutPage() {
+// Action to handle form submission
+export const action: ActionFunction = async ({ request }) => {
+  const formData = await request.formData();
+  const name = formData.get("name");
+  const email = formData.get("email");
+  const message = formData.get("message");
+
+  // TODO: Integrate email service or store message
+  console.log({ name, email, message });
+
+  return json({ success: true });
+};
+
+export default function ContactPage() {
+  const actionData = useActionData<{ success?: boolean }>();
+
   return (
     <div className="min-h-screen bg-[#0f172a] text-white flex flex-col justify-between">
       {/* Header */}
@@ -21,89 +38,78 @@ export default function AboutPage() {
           <Link to="/blog" className="hover:text-white">
             Blog
           </Link>
+          <Link to="/contact" className="hover:text-white">
+            Contact
+          </Link>
         </nav>
       </header>
 
       {/* Main Content */}
-      <main className="flex flex-col items-center justify-center px-4 md:px-6 py-12 md:py-16 flex-1">
-        {/* Title */}
-        <div className="text-center mb-12 md:mb-16">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
-            <span className="text-white">About </span>
-            <span className="text-cyan-400">Game Log</span>
+      <main className="px-4 md:px-6 py-8 md:py-12 flex-1 flex flex-col items-center">
+        <div className="w-full max-w-lg">
+          <h1 className="text-3xl font-extrabold text-center mb-6">
+            Contact Us
           </h1>
-          <div className="mt-2 h-1 w-20 md:w-28 bg-gradient-to-r from-cyan-400/70 to-transparent mx-auto rounded-full" />
-          <p className="mt-4 text-zinc-400 text-sm md:text-base max-w-xl mx-auto">
-            Your personal companion for logging, rating, and tracking the games
-            you play — whether it’s solo story-driven epics or chaotic
-            multiplayer sessions.
-          </p>
-        </div>
-
-        {/* Cards */}
-        <div className="w-full max-w-7xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-md hover:shadow-lg transition">
-            <h2 className="text-lg md:text-xl font-semibold text-cyan-400 mb-2">
-              What is Game Log?
-            </h2>
-            <p className="text-zinc-300 text-sm md:text-base leading-6">
-              <strong className="text-white">Game Log</strong> is a sleek,
-              minimal app made for gamers to log, track, and rate games across
-              all platforms. Whether you play solo or with friends, it keeps
-              things clean and organised.
+          {actionData?.success && (
+            <p className="text-green-400 text-center mb-4">
+              Thank you! Your message has been sent.
             </p>
-          </div>
-
-          <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-md hover:shadow-lg transition">
-            <h2 className="text-lg md:text-xl font-semibold text-cyan-400 mb-2">
-              Tech Stack
-            </h2>
-            <ul className="list-disc list-inside text-zinc-300 text-sm md:text-base space-y-1">
-              <li>
-                <strong className="text-white">Remix</strong>: Full-stack React
-                framework
-              </li>
-              <li>
-                <strong className="text-white">Tailwind CSS</strong>:
-                Utility-first styling
-              </li>
-              <li>
-                <strong className="text-white">Prisma</strong>: Type-safe DB
-                with SQLite
-              </li>
-            </ul>
-          </div>
-
-          <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-md hover:shadow-lg transition">
-            <h2 className="text-lg md:text-xl font-semibold text-cyan-400 mb-2">
-              Design Philosophy
-            </h2>
-            <p className="text-zinc-300 text-sm md:text-base leading-6">
-              Clean, responsive, and distraction-free. Game Log works on all
-              screen sizes and prioritises usability.
-            </p>
-          </div>
-
-          <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-md hover:shadow-lg transition">
-            <h2 className="text-lg md:text-xl font-semibold text-cyan-400 mb-2">
-              Storage & Features
-            </h2>
-            <p className="text-zinc-300 text-sm md:text-base leading-6">
-              Data is stored in a local SQLite DB. Features like syncing,
-              filters, sorting, and tags are planned.
-            </p>
-          </div>
-
-          <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-md hover:shadow-lg transition">
-            <h2 className="text-lg md:text-xl font-semibold text-cyan-400 mb-2">
-              Vision
-            </h2>
-            <p className="text-zinc-300 text-sm md:text-base leading-6">
-              Game Log is evolving into a full-featured companion app — with
-              multiplayer logging, recommendations, and social features in the
-              works.
-            </p>
-          </div>
+          )}
+          <Form method="post" className="space-y-6">
+            <div>
+              <label
+                htmlFor="name"
+                className="block text-sm text-zinc-300 mb-1"
+              >
+                Name
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                className="w-full p-3 bg-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="email"
+                className="block text-sm text-zinc-300 mb-1"
+              >
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                className="w-full p-3 bg-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              />
+            </div>
+            <div>
+              <label
+                htmlFor="message"
+                className="block text-sm text-zinc-300 mb-1"
+              >
+                Message
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                rows={5}
+                required
+                className="w-full p-3 bg-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              />
+            </div>
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                className="bg-cyan-600 hover:bg-cyan-500 text-white px-6 py-2 rounded-md"
+              >
+                Send Message
+              </button>
+            </div>
+          </Form>
         </div>
       </main>
 

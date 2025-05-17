@@ -1,34 +1,66 @@
+import { useState } from "react";
+import { Form, Link, useLoaderData } from "@remix-run/react";
+import { json, redirect } from "@remix-run/node";
+import type { ActionFunctionArgs, LoaderFunction } from "@remix-run/node";
 import { PrismaClient } from "@prisma/client";
-import { json } from "@remix-run/node";
-import { useLoaderData, Link } from "@remix-run/react";
-import type { MetaFunction } from "@remix-run/node";
+import ImageUploader from "~/components/ImageUploader";
 import InstagramIcon from "~/assets/svg/instagram.svg";
 import FacebookIcon from "~/assets/svg/facebook.svg";
 import TwitterIcon from "~/assets/svg/twitter.svg";
 
-export const meta: MetaFunction = () => {
-  return [
-    { title: "New Remix App" },
-    { name: "description", content: "Welcome to Remix!" },
-  ];
+// Loader fetches categories for dropdown
+export const loader: LoaderFunction = async () => {
+  const prisma = new PrismaClient();
+  const categories = await prisma.category.findMany({
+    select: { id: true, title: true },
+    orderBy: { title: "asc" },
+  });
+  await prisma.$disconnect();
+  return json({ categories });
 };
 
-export async function loader() {
+// Action handles form submission and creates a new game
+export const action = async ({ request }: ActionFunctionArgs) => {
+  const formData = await request.formData();
+  const title = formData.get("title") as string;
+  const description = formData.get("description") as string;
+  const price = parseFloat(formData.get("price") as string);
+  const rating = parseFloat(formData.get("rating") as string);
+  const releaseDate = new Date(formData.get("releaseDate") as string);
+  const imageUrl = formData.get("imageUrl") as string;
+  const categoryId = formData.get("categoryId") as string;
+
   const prisma = new PrismaClient();
+  await prisma.game.create({
+    data: {
+      title,
+      description,
+      price,
+      rating,
+      releaseDate,
+      imageUrl,
+      categoryId,
+    },
+  });
+  await prisma.$disconnect();
 
-  const games = await prisma.game.findMany();
+  // Redirect back to games list
+  return redirect("/games");
+};
 
-  return json({ games });
-}
+export default function AddGame() {
+  // Pull categories from loader
+  const { categories } = useLoaderData<typeof loader>();
+  const [imageUrl, setImageUrl] = useState("");
 
-export default function Index() {
-  const { games } = useLoaderData<typeof loader>();
-
-  console.log({ games });
+  // Callback when Cloudinary returns a URL
+  const handleImageUploaded = (url: string) => {
+    setImageUrl(url);
+  };
 
   return (
     <div className="min-h-screen bg-[#0f172a] text-white flex flex-col justify-between">
-      {/* Header */}
+      {/* HEADER */}
       <header className="flex items-center justify-between px-32 py-12">
         <div className="text-2xl font-bold tracking-wide">
           <span className="text-cyan-400">GAME</span> LOG
@@ -46,148 +78,165 @@ export default function Index() {
         </nav>
       </header>
 
-      {/* Main Form */}
+      {/* MAIN FORM */}
       <main className="flex flex-col items-center justify-center px-4 py-10">
-        <h1 className="text-2xl font-semibold mb-6">Track a New Game</h1>
-        <form className="bg-slate-800 p-6 rounded-xl w-full max-w-md space-y-4 shadow-lg">
-          <div>
-            <label htmlFor="title" className="block mb-1 text-sm text-zinc-300">
-              Title
-            </label>
-            <input
-              id="title"
-              name="title"
-              type="text"
-              placeholder="Enter title"
-              className="w-full p-2 rounded-md bg-zinc-700 text-white placeholder-zinc-500"
-            />
-          </div>
-          <div className="flex space-x-4">
-            <div className="flex-1">
+        <h1 className="text-2xl font-semibold mb-6">
+          Add <span className="text-cyan-400">Game</span>
+        </h1>
+        <div className="max-w-2xl mx-auto bg-slate-800 p-8 rounded-xl shadow-lg w-full">
+          <Form method="post" className="space-y-6">
+            {/* Hidden field for Cloudinary URL */}
+            <input type="hidden" name="imageUrl" value={imageUrl} />
+
+            {/* Title */}
+            <div>
               <label
-                htmlFor="price"
+                htmlFor="title"
                 className="block mb-1 text-sm text-zinc-300"
               >
-                Price
+                Title
               </label>
               <input
-                id="price"
-                name="price"
                 type="text"
-                placeholder="e.g. 59.99, 84.99..."
-                className="w-full p-2 rounded-md bg-zinc-700 text-white placeholder-zinc-500"
+                id="title"
+                name="title"
+                required
+                className="w-full p-3 bg-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500"
               />
             </div>
-            <div className="w-24">
+
+            {/* Description */}
+            <div>
               <label
-                htmlFor="rating"
+                htmlFor="description"
                 className="block mb-1 text-sm text-zinc-300"
               >
-                Rating
+                Description
               </label>
-              <input
-                id="rating"
-                name="rating"
-                type="text"
-                placeholder="1-5"
-                className="w-full p-2 rounded-md bg-zinc-700 text-white placeholder-zinc-500"
+              <textarea
+                id="description"
+                name="description"
+                required
+                rows={4}
+                className="w-full p-3 bg-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500"
               />
             </div>
-          </div>
-          <div>
-            <label
-              htmlFor="category"
-              className="block mb-1 text-sm text-zinc-300"
-            >
-              Category
-            </label>
-            <select
-              id="category"
-              name="category"
-              className="w-full p-2 rounded-md bg-zinc-700 text-white"
-            >
-              <option>Please select...</option>
-              <option>RPG</option>
-              <option>Action</option>
-              <option>Strategy</option>
-              <option>FPS</option>
-              <option>MMO</option>
-              <option>CO-OP</option>
-            </select>
-          </div>
-          <div>
-            <label
-              htmlFor="description"
-              className="block mb-1 text-sm text-zinc-300"
-            >
-              Description
-            </label>
-            <textarea
-              id="description"
-              name="description"  
-              placeholder="In a few words, what was your experience with the game?"
-              className="w-full p-2 h-24 rounded-md bg-zinc-700 text-white placeholder-zinc-500"
-            />
-            <div className="flex space-x-4">
-              <div className="flex-1">
+
+            {/* Image Uploader */}
+            <div className="mb-8">
+              <ImageUploader onImageUploaded={handleImageUploaded} />
+            </div>
+
+            {/* Price & Rating */}
+            <div className="grid grid-cols-2 gap-4">
+              <div>
                 <label
-                  htmlFor="startDate"
+                  htmlFor="price"
                   className="block mb-1 text-sm text-zinc-300"
                 >
-                  Start Date
+                  Price
                 </label>
                 <input
-                  id="startDate"
-                  name="startDate"
-                  type="date"
-                  className="w-full p-2 rounded-md bg-zinc-700 text-white placeholder-zinc-500"
+                  type="number"
+                  id="price"
+                  name="price"
+                  step="0.01"
+                  min="0"
+                  required
+                  className="w-full p-3 bg-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 />
               </div>
-              <div className="flex-1">
+              <div>
                 <label
-                  htmlFor="endDate"
+                  htmlFor="rating"
                   className="block mb-1 text-sm text-zinc-300"
                 >
-                  End Date
+                  Rating
                 </label>
                 <input
-                  id="endDate"
-                  name="endDate"
-                  type="date"
-                  className="w-full p-2 rounded-md bg-zinc-700 text-white placeholder-zinc-500"
+                  type="number"
+                  id="rating"
+                  name="rating"
+                  step="0.1"
+                  min="0"
+                  max="5"
+                  required
+                  className="w-full p-3 bg-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500"
                 />
               </div>
             </div>
-          </div>
-          <div className="flex justify-end space-x-2">
-            <button
-              type="button"
-              className="px-4 py-2 rounded bg-zinc-700 text-zinc-300 hover:bg-zinc-600"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="px-4 py-2 rounded bg-white text-black font-semibold"
-            >
-              Submit
-            </button>
-          </div>
-        </form>
+
+            {/* Release Date */}
+            <div>
+              <label
+                htmlFor="releaseDate"
+                className="block mb-1 text-sm text-zinc-300"
+              >
+                Release Date
+              </label>
+              <input
+                type="date"
+                id="releaseDate"
+                name="releaseDate"
+                required
+                className="w-full p-3 bg-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              />
+            </div>
+
+            {/* Category */}
+            <div>
+              <label
+                htmlFor="categoryId"
+                className="block mb-1 text-sm text-zinc-300"
+              >
+                Category
+              </label>
+              <select
+                id="categoryId"
+                name="categoryId"
+                required
+                className="w-full p-3 bg-zinc-700 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500"
+              >
+                <option value="">Select a category</option>
+                {categories.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.title}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Form Actions */}
+            <div className="flex justify-end space-x-2">
+              <Link
+                to="/games"
+                className="px-4 py-2 rounded bg-zinc-700 text-zinc-300 hover:bg-zinc-600"
+              >
+                Cancel
+              </Link>
+              <button
+                type="submit"
+                className="px-4 py-2 rounded bg-white text-black font-semibold hover:bg-gray-200"
+              >
+                Add Game
+              </button>
+            </div>
+          </Form>
+        </div>
       </main>
 
       {/* Footer */}
-      <footer className="flex justify-between items-center px-32 py-12 text-zinc-400 text-sm border-t border-slate-700">
-        <div className="flex items-center gap-2">
+      <footer className="flex flex-col md:flex-row justify-between items-center px-4 md:px-32 py-6 md:py-12 text-zinc-400 text-sm md:text-base border-t border-slate-700 space-y-4 md:space-y-0">
+        <div className="flex flex-col sm:flex-row items-center gap-2">
           <span className="font-bold text-cyan-400">GAME LOG</span>
-          <div className="flex gap-4 ml-4">
+          <div className="flex gap-4">
             <a
               href="https://facebook.com"
               aria-label="Facebook"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={FacebookIcon} alt="Instagram" className="w-5 h-5" />
+              <img src={FacebookIcon} alt="Facebook" className="w-5 h-5" />
             </a>
             <a
               href="https://instagram.com"
@@ -203,11 +252,11 @@ export default function Index() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <img src={TwitterIcon} alt="Instagram" className="w-5 h-5" />
+              <img src={TwitterIcon} alt="X" className="w-5 h-5" />
             </a>
           </div>
         </div>
-        <div className="flex gap-48">
+        <div className="flex flex-col sm:flex-row gap-8">
           <div>
             <h4 className="font-semibold mb-1 text-white">Site</h4>
             <ul className="space-y-2">
@@ -217,14 +266,14 @@ export default function Index() {
                 </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-white">
+                <Link to="/about" className="hover:text-white">
                   About
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="hover:text-white">
+                <Link to="/blog" className="hover:text-white">
                   Blog
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -232,17 +281,17 @@ export default function Index() {
             <h4 className="font-semibold mb-1 text-white">Support</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="hover:text-white">
+                <a href="/legal" className="hover:text-white">
                   Legal
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white">
+                <a href="/contact" className="hover:text-white">
                   Contact Us
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white">
+                <a href="/privacy" className="hover:text-white">
                   Privacy Policy
                 </a>
               </li>
@@ -252,17 +301,17 @@ export default function Index() {
             <h4 className="font-semibold mb-1 text-white">Follow Us</h4>
             <ul className="space-y-2">
               <li>
-                <a href="#" className="hover:text-white">
+                <a href="https://facebook.com" className="hover:text-white">
                   Facebook
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white">
+                <a href="https://x.com" className="hover:text-white">
                   Twitter
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-white">
+                <a href="https://instagram.com" className="hover:text-white">
                   Instagram
                 </a>
               </li>

@@ -3,7 +3,7 @@ import InstagramIcon from "~/assets/svg/instagram.svg";
 import FacebookIcon from "~/assets/svg/facebook.svg";
 import TwitterIcon from "~/assets/svg/twitter.svg";
 
-export default function AboutPage() {
+export default function LegalPage() {
   return (
     <div className="min-h-screen bg-[#0f172a] text-white flex flex-col justify-between">
       {/* Header */}
@@ -21,90 +21,61 @@ export default function AboutPage() {
           <Link to="/blog" className="hover:text-white">
             Blog
           </Link>
+          <Link to="/legal" className="hover:text-white">
+            Legal
+          </Link>
         </nav>
       </header>
 
       {/* Main Content */}
-      <main className="flex flex-col items-center justify-center px-4 md:px-6 py-12 md:py-16 flex-1">
-        {/* Title */}
-        <div className="text-center mb-12 md:mb-16">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
-            <span className="text-white">About </span>
-            <span className="text-cyan-400">Game Log</span>
-          </h1>
-          <div className="mt-2 h-1 w-20 md:w-28 bg-gradient-to-r from-cyan-400/70 to-transparent mx-auto rounded-full" />
-          <p className="mt-4 text-zinc-400 text-sm md:text-base max-w-xl mx-auto">
-            Your personal companion for logging, rating, and tracking the games
-            you play — whether it’s solo story-driven epics or chaotic
-            multiplayer sessions.
+      <main className="px-4 md:px-6 py-8 md:py-12 flex-1 max-w-4xl mx-auto space-y-8">
+        <h1 className="text-3xl md:text-4xl font-extrabold text-center">
+          Legal
+        </h1>
+        <section>
+          <h2 className="text-xl font-semibold text-cyan-400 mb-2">
+            Terms of Service
+          </h2>
+          <p className="text-zinc-300 text-sm md:text-base leading-relaxed">
+            Welcome to Game Log. By accessing or using our service, you agree to
+            be bound by these terms. You may not use our service if you do not
+            agree to all of the terms.
           </p>
-        </div>
+          <ul className="list-disc list-inside text-zinc-300 text-sm md:text-base space-y-1 mt-2">
+            <li>You are responsible for any content you submit.</li>
+            <li>
+              We reserve the right to modify or terminate the service for any
+              reason.
+            </li>
+            <li>
+              We are not liable for any loss or damage arising from use of the
+              service.
+            </li>
+          </ul>
+        </section>
 
-        {/* Cards */}
-        <div className="w-full max-w-7xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-md hover:shadow-lg transition">
-            <h2 className="text-lg md:text-xl font-semibold text-cyan-400 mb-2">
-              What is Game Log?
-            </h2>
-            <p className="text-zinc-300 text-sm md:text-base leading-6">
-              <strong className="text-white">Game Log</strong> is a sleek,
-              minimal app made for gamers to log, track, and rate games across
-              all platforms. Whether you play solo or with friends, it keeps
-              things clean and organised.
-            </p>
-          </div>
-
-          <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-md hover:shadow-lg transition">
-            <h2 className="text-lg md:text-xl font-semibold text-cyan-400 mb-2">
-              Tech Stack
-            </h2>
-            <ul className="list-disc list-inside text-zinc-300 text-sm md:text-base space-y-1">
-              <li>
-                <strong className="text-white">Remix</strong>: Full-stack React
-                framework
-              </li>
-              <li>
-                <strong className="text-white">Tailwind CSS</strong>:
-                Utility-first styling
-              </li>
-              <li>
-                <strong className="text-white">Prisma</strong>: Type-safe DB
-                with SQLite
-              </li>
-            </ul>
-          </div>
-
-          <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-md hover:shadow-lg transition">
-            <h2 className="text-lg md:text-xl font-semibold text-cyan-400 mb-2">
-              Design Philosophy
-            </h2>
-            <p className="text-zinc-300 text-sm md:text-base leading-6">
-              Clean, responsive, and distraction-free. Game Log works on all
-              screen sizes and prioritises usability.
-            </p>
-          </div>
-
-          <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-md hover:shadow-lg transition">
-            <h2 className="text-lg md:text-xl font-semibold text-cyan-400 mb-2">
-              Storage & Features
-            </h2>
-            <p className="text-zinc-300 text-sm md:text-base leading-6">
-              Data is stored in a local SQLite DB. Features like syncing,
-              filters, sorting, and tags are planned.
-            </p>
-          </div>
-
-          <div className="bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-md hover:shadow-lg transition">
-            <h2 className="text-lg md:text-xl font-semibold text-cyan-400 mb-2">
-              Vision
-            </h2>
-            <p className="text-zinc-300 text-sm md:text-base leading-6">
-              Game Log is evolving into a full-featured companion app — with
-              multiplayer logging, recommendations, and social features in the
-              works.
-            </p>
-          </div>
-        </div>
+        <section>
+          <h2 className="text-xl font-semibold text-cyan-400 mb-2">
+            Privacy Policy
+          </h2>
+          <p className="text-zinc-300 text-sm md:text-base leading-relaxed">
+            We take your privacy seriously. This section describes how we
+            collect, use, and protect your personal information.
+          </p>
+          <ul className="list-disc list-inside text-zinc-300 text-sm md:text-base space-y-1 mt-2">
+            <li>
+              We do not share your personal data with third parties without
+              consent.
+            </li>
+            <li>
+              Data is stored securely in a SQLite database on our servers.
+            </li>
+            <li>
+              You can request deletion of your data at any time by contacting
+              support.
+            </li>
+          </ul>
+        </section>
       </main>
 
       {/* Footer */}
