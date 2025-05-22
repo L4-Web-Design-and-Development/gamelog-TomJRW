@@ -15,6 +15,11 @@ export const loader = async () => {
       rating: true,
       releaseDate: true,
       imageUrl: true,
+      category: {
+        select: {
+          title: true,
+        },
+      }
     },
     orderBy: { createdAt: "desc" },
   });
@@ -107,6 +112,10 @@ export default function GamesPage() {
                     Release Date:
                   </span>{" "}
                   {new Date(game.releaseDate).toLocaleDateString()}
+                </p>
+                <p>
+                  <span className="font-semibold text-white">Category:</span>{" "}
+                  {game.category.title} 
                 </p>
               </div>
               {/* Delete Form */}
