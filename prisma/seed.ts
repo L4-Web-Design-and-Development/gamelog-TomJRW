@@ -68,11 +68,20 @@ async function seed() {
   // 2) Seed your games, assigning each a random category from the ones you just created
   const gamesData = [
     {
-      title: "The Legend of Zelda: Breath of the Wild",
+      title: "Stellar Blade",
+      description: "An RPG adventure game.",
+      price: 59.99,
+      rating: 4.9,
+      releaseDate: new Date("2017-03-03"),
+      imageURL: 'https://res.cloudinary.com/dxjush3kb/image/upload/v1747510877/game-covers/rds07aw3nk8fzy8lbokd.jpg'
+    },
+    {
+      title: "The Last of Us Part I",
       description: "An open-world adventure game set in the kingdom of Hyrule.",
       price: 59.99,
       rating: 4.9,
       releaseDate: new Date("2017-03-03"),
+      imageUrl: 'https://res.cloudinary.com/dxjush3kb/image/upload/v1747511528/game-covers/qqvxmpxr8vj9xhlzrqzr.jpg'
     },
     // … etc …
   ];
